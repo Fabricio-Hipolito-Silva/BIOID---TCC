@@ -10,5 +10,7 @@ extern uint8_t id;
 
 
 bool cadastroDedo();
+void cadastroSetup();  // Declaração da função de setup
+void cadastroLoop(); 
 
 #endif

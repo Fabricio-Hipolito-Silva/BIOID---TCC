@@ -38,4 +38,3 @@ bool cadastroDedo() {
       return false;
     }
   }
-  
