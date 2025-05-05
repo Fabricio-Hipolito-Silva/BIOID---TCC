@@ -6,3 +6,4 @@
 .pioenvs/
 .pio/libdeps/
 .build/
+include/secret.h

@@ -11,5 +11,6 @@ extern HardwareSerial mySerial;  // Declaração externa
 extern Adafruit_Fingerprint finger;  // Declaração externa
 
 void inicializarSensor();  // Função para inicializar o sensor de digital
+void conectarWifi();
 
 #endif

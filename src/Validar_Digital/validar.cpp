@@ -9,6 +9,7 @@ int ValidarID();
 void validarSetup() {
     Serial.begin(9600);
     inicializarSensor();
+    conectarWifi();
 }
 
 void validarLoop(){
