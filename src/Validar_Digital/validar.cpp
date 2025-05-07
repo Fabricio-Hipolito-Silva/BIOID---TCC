@@ -15,9 +15,12 @@ void validarSetup() {
 void validarLoop(){
     
     int idDigital = ValidarID();
+    String NomeDigital = ValidarNome(idDigital);
     if (idDigital >= 0) {
         Serial.print("ID validada com sucesso: ");
         Serial.println(idDigital);
+        Serial.print("E de nome ");
+        Serial.print(NomeDigital);
     } else {
         Serial.println("ID não reconhecida.");
     }

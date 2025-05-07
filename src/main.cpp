@@ -6,9 +6,9 @@
 #include "fingerprint_init.h"
 
 void setup(){
-    // cadastroSetup();
-    validarSetup();  
+    cadastroSetup();
+    //validarSetup();  
 }void loop(){
-    // cadastroLoop();
-    validarLoop(); 
+    cadastroLoop();
+    //validarLoop(); 
 }

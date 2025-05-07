@@ -1,4 +1,6 @@
 #include "validar.h"
+#include "secret.h"
+
 
 int ValidarID() {
     int p;
@@ -15,8 +17,25 @@ int ValidarID() {
 
     p = finger.fingerSearch();
     if (p == FINGERPRINT_OK) {
-        return finger.fingerID;
+        int idV = finger.fingerID;
+        return idV;
     } else {
         return -1;
     }
-}
+};
+
+String ValidarNome(int idV) {
+    HTTPClient http;
+    http.begin(String(Server) + "/BIOID%20_%20TCC/api/consultar.php?id="+ String(idV));
+    int resposta = http.GET();
+    if (resposta > 0){
+       String nome = http.getString();
+       http.end();
+       return nome;
+    }else{
+        Serial.print("Erro na consulta do Nome");
+        http.end(); 
+        return "";  
+    };
+    
+};

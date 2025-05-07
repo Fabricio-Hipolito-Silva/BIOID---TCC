@@ -3,10 +3,14 @@
 
 #include <Arduino.h>
 #include <Adafruit_Fingerprint.h>
+#include <HTTPClient.h>
+#include "secret.h"
+
 
 
 extern Adafruit_Fingerprint finger;
 extern uint8_t id;
+extern String nome;
 
 
 bool cadastroDedo();
