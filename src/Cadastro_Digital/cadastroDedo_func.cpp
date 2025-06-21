@@ -48,7 +48,7 @@ bool cadastroDedo() {
 
   bool cadastroBanco(){
   //Envio para o Banco (Fazer uma função disso para ele enviar pro banco)
-  http.begin("http:" + String(Server) + "/BIOID%20_%20TCC/api/cadastro.php");
+  http.begin("http://" + String(Server) + "/BIOID%20_%20TCC/api/cadastro.php");
   http.addHeader("Content-Type", "application/x-www-form-urlencoded");
   String dados = "id=" + String(id) + "&nome=" + nome;
   int resposta = http.POST(dados);

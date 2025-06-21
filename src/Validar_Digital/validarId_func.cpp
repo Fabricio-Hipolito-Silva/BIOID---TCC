@@ -26,7 +26,7 @@ int ValidarID() {
 
 String ValidarNome(int idV) {
     HTTPClient http;
-    http.begin(String(Server) + "/BIOID%20_%20TCC/api/consultar.php?id="+ String(idV));
+    http.begin("http://" + String(Server) + "/BIOID%20_%20TCC/api/consultar.php?id="+ String(idV));
     int resposta = http.GET();
     if (resposta > 0){
        String nome = http.getString();
@@ -37,5 +37,6 @@ String ValidarNome(int idV) {
         http.end(); 
         return "";  
     };
+    
     
 };
