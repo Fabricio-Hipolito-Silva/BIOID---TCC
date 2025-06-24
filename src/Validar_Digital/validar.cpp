@@ -4,6 +4,10 @@
 #include "fingerprint_init.h"
 #include "secret.h"
 #include "validar.h"
+#define LED_AMARELO 33
+#define LED_VERDE 32
+#define LED_VERMELHO 25
+
 
 int ValidarID();
 
@@ -22,8 +26,18 @@ void validarLoop(){
         Serial.println(idDigital);
         Serial.print("E de nome ");
         Serial.print(NomeDigital);
+        digitalWrite(LED_VERDE, HIGH);
+        digitalWrite(LED_AMARELO, LOW);
+        delay(5000);
+        digitalWrite(LED_VERDE, LOW);
+        digitalWrite(LED_AMARELO, HIGH);
     } else {
         Serial.println("ID não reconhecida.");
+        digitalWrite(LED_VERMELHO, HIGH);
+        digitalWrite(LED_AMARELO, LOW);
+        delay(5000);
+        digitalWrite(LED_VERMELHO, LOW);
+        digitalWrite(LED_AMARELO, HIGH);
     }
     if (idDigital >= 0) {
         HTTPClient post;
@@ -34,7 +48,5 @@ void validarLoop(){
         post.POST(dados);
         post.end();
     }
-
-
     }
 
