@@ -7,5 +7,5 @@ $password = "";
 try {
     $conn = new PDO("mysql:host=$hostname;dbname=$dbname", $username, $password);
 } catch (PDOException $pe) {
-    echo "Falha" . $pe -> get_message();
+    echo "Falha" . $pe -> getMessage();
 }

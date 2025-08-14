@@ -5,5 +5,6 @@ extern const char* ssid;
 extern const char* senha;
 extern const char* Server;
 
-
+    
 #endif
+    

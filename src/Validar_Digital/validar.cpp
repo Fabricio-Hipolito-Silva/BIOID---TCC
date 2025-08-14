@@ -41,7 +41,7 @@ void validarLoop(){
     }
     if (idDigital >= 0) {
         HTTPClient post;
-        String url = "http://" + String(Server) + "/BIOID%20_%20TCC/api/salvar_ultimo_usuario.php";
+        String url = "http://" + String(Server) + "/ETEC/3MIN/TCC/BIOID%20_%20TCC/api/salvar_ultimo_usuario.php";
         String dados = "id=" + String(idDigital);
         post.begin(url);
         post.addHeader("Content-Type", "application/x-www-form-urlencoded");
