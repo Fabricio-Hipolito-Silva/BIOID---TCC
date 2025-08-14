@@ -2,56 +2,85 @@
 #include <Adafruit_Fingerprint.h>
 #include <HardwareSerial.h>
 #include <WiFi.h>
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+#include <Keypad.h>
 #include "secret.h"
 #include "fingerprint_init.h"
 
-#define LED_AMARELO 33
-#define LED_VERDE 32
-#define LED_VERMELHO 25
-
-
-void piscarLed() {
-  digitalWrite(LED_AMARELO, HIGH);
-  delay(300);
-  digitalWrite(LED_AMARELO, LOW);
-  delay(300);
-}
-
-
 
 HardwareSerial mySerial(2);  // Define mySerial na UART2 (RX = 13, TX = 12)
-Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial); 
+Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
+LiquidCrystal_I2C lcd(0x27, 16, 2); // Endereço 0x27, LCD 16x2
+
+
+void inicializarTelaLCD(){
+  Wire.begin(18,19);
+  lcd.init();
+  lcd.backlight();
+  lcd.setCursor(1,1);
+}
+
+void inicializarTecladoMatriz(){
+  const byte LINHAS = 4;
+  const byte COLUNAS = 3;
+  char teclas[LINHAS][COLUNAS] = {
+    {'1', '2', '3'},
+    {'4', '5', '6'},
+    {'7', '8', '9'},
+    {'*', '0', '#'}
+  };
+  byte pinosLinhas[LINHAS] = {13, 12, 14, 27};
+  byte pinosColunas[COLUNAS] = {26, 25, 33};
+  Keypad teclado = Keypad(makeKeymap(teclas), pinosLinhas, pinosColunas, LINHAS, COLUNAS);
+  Serial.begin(9600);
+}
 
 void inicializarSensor() {
-  Serial.begin(9600);
-  pinMode(LED_AMARELO, OUTPUT);
-  pinMode(LED_VERDE, OUTPUT);
-  pinMode(LED_VERMELHO, OUTPUT);
-  mySerial.begin(57600, SERIAL_8N1, 13, 12); 
+  mySerial.begin(57600, SERIAL_8N1, 4, 5); 
 
   finger.begin(57600);
   if (finger.verifyPassword() == FINGERPRINT_OK) {
-    Serial.println("Sensor encontrado e senha correta!");
-    return;
+    lcd.setCursor(0,0);
+    lcd.print("Sensor");
+    lcd.setCursor(0,1);
+    lcd.print("Encontrado");
+      return;
   } else {
-    Serial.println("Sensor não encontrado ou senha incorreta!");
-    piscarLed();
+    lcd.setCursor(0,0);
+    lcd.print("Sensor não");
+    lcd.setCursor(0,1);
+    lcd.print("Encontrado");
     ESP.restart();
   }
 }
 
 void conectarWifi(){
   WiFi.begin(ssid, senha);
+  int ponto = 0;
   while (WiFi.status() != WL_CONNECTED){
     delay(500);
-    Serial.print('.');
-    piscarLed();
-  };
-  Serial.println("");
-  Serial.println("Conectado");
-  Serial.print("IP local: ");
-  Serial.println(WiFi.localIP());
-  digitalWrite(LED_AMARELO, HIGH);
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Conectando");
+    
+    // Adiciona pontinhos como efeito
+    for(int i = 0; i < ponto; i++){
+      lcd.print(".");
+    }
+
+    ponto++;
+    if(ponto > 3) ponto = 0; // Reseta após 3 pontos
+
+    delay(500);
+    };
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Conectado");
+  lcd.setCursor(0,1);
+  lcd.print("IP:");
+  lcd.setCursor(4,1);
+  lcd.print(WiFi.localIP());
 };
 
 

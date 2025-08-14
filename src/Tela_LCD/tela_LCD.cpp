@@ -30,6 +30,6 @@
 //     char tecla = teclado.getKey();
 //     if (tecla) {
 //     lcd.setCursor(0,1);
-//     lcd.print("Tecla pressionada: ");
+//     lcd.print(tecla);
 //   }
 // }

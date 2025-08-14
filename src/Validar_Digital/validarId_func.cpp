@@ -1,25 +1,28 @@
 #include "validar.h"
 #include "secret.h"
-#define LED_AMARELO 33
-#define LED_VERDE 32
-#define LED_VERMELHO 25
+#include "fingerprint_init.h"
 
 
 
 int ValidarID() {
     int p;
-   
-    Serial.println("Coloque o dedo no sensor...");
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Coloque o dedo");
+    lcd.setCursor(0,1);
+    lcd.print("no sensor...");
     while ((p = finger.getImage()) != FINGERPRINT_OK);
 
     if (finger.image2Tz(1) != FINGERPRINT_OK) return -1;
 
-    Serial.println("Imagem capturada. Retire o Dedo");
-    digitalWrite(LED_AMARELO, LOW);
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Imagem Capturada");
+    lcd.setCursor(0,1);
+    lcd.print("Retire o Dedo");
     delay(1000);
 
     while (finger.getImage() != FINGERPRINT_NOFINGER);
-    digitalWrite(LED_AMARELO, HIGH);
 
     p = finger.fingerSearch();
     if (p == FINGERPRINT_OK) {
@@ -39,7 +42,11 @@ String ValidarNome(int idV) {
        http.end();
        return nome;
     }else{
-        Serial.print("Erro na consulta do Nome");
+        lcd.clear();
+        lcd.setCursor(0,0);
+        lcd.print("Erro na Consulta");
+        lcd.setCursor(0,1);
+        lcd.print("do Nome");
         http.end(); 
         return "";  
     };

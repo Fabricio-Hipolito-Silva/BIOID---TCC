@@ -4,15 +4,14 @@
 #include "fingerprint_init.h"
 #include "secret.h"
 #include "validar.h"
-#define LED_AMARELO 33
-#define LED_VERDE 32
-#define LED_VERMELHO 25
-
+#include <LiquidCrystal_I2C.h>
 
 int ValidarID();
 
 void validarSetup() {
     Serial.begin(9600);
+    inicializarTelaLCD();
+    inicializarTecladoMatriz();
     inicializarSensor();
     conectarWifi();
 }
