@@ -21,22 +21,19 @@ void validarLoop(){
     int idDigital = ValidarID();
     String NomeDigital = ValidarNome(idDigital);
     if (idDigital >= 0) {
-        Serial.print("ID validada com sucesso: ");
-        Serial.println(idDigital);
-        Serial.print("E de nome ");
-        Serial.print(NomeDigital);
-        digitalWrite(LED_VERDE, HIGH);
-        digitalWrite(LED_AMARELO, LOW);
+        lcd.clear();
+        lcd.setCursor(0,0);
+        lcd.print("ID:");
+        lcd.setCursor(4,0);
+        lcd.print(idDigital);
+        lcd.setCursor(0,1);
+        lcd.print(NomeDigital);
         delay(5000);
-        digitalWrite(LED_VERDE, LOW);
-        digitalWrite(LED_AMARELO, HIGH);
     } else {
-        Serial.println("ID não reconhecida.");
-        digitalWrite(LED_VERMELHO, HIGH);
-        digitalWrite(LED_AMARELO, LOW);
+        lcd.clear();
+        lcd.setCursor(0,0);
+        lcd.print("ID não reconhecida.");
         delay(5000);
-        digitalWrite(LED_VERMELHO, LOW);
-        digitalWrite(LED_AMARELO, HIGH);
     }
     if (idDigital >= 0) {
         HTTPClient post;

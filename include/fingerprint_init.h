@@ -12,8 +12,7 @@ extern HardwareSerial mySerial;  // Declaração externa
 extern Adafruit_Fingerprint finger;  // Declaração externa
 
 //Definir o LCD
-extern LiquidCrystal_I2C lcd; // Endereço 0x27, LCD 16x2; //Declaração externa
-
+extern LiquidCrystal_I2C lcd; // Endereço 0x27, LCD 16x2 //Declaração externa
 
 void inicializarSensor();  // Função para inicializar o sensor de digital
 void conectarWifi();
