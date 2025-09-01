@@ -11,7 +11,9 @@ int ValidarID() {
     lcd.print("Coloque o dedo");
     lcd.setCursor(0,1);
     lcd.print("no sensor...");
-    while ((p = finger.getImage()) != FINGERPRINT_OK);
+    while ((p = finger.getImage()) != FINGERPRINT_OK){
+        webSocket.loop();
+    };
 
     if (finger.image2Tz(1) != FINGERPRINT_OK) return -1;
 
@@ -20,9 +22,11 @@ int ValidarID() {
     lcd.print("Imagem Capturada");
     lcd.setCursor(0,1);
     lcd.print("Retire o Dedo");
-    delay(1000);
+    delay(500);
 
-    while (finger.getImage() != FINGERPRINT_NOFINGER);
+    while (finger.getImage() != FINGERPRINT_NOFINGER){
+        webSocket.loop();
+    };
 
     p = finger.fingerSearch();
     if (p == FINGERPRINT_OK) {

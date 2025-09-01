@@ -4,6 +4,8 @@
 #include <Adafruit_Fingerprint.h>
 #include <HardwareSerial.h>
 #include <LiquidCrystal_I2C.h>
+#include <WebSocketsClient.h>
+
 
 // Definir o objeto mySerial (com a UART2)
 extern HardwareSerial mySerial;  // Declaração externa
@@ -14,10 +16,15 @@ extern Adafruit_Fingerprint finger;  // Declaração externa
 //Definir o LCD
 extern LiquidCrystal_I2C lcd; // Endereço 0x27, LCD 16x2 //Declaração externa
 
+extern WebSocketsClient webSocket;
+
+
 void inicializarSensor();  // Função para inicializar o sensor de digital
 void conectarWifi();
 void inicializarTelaLCD();
 void inicializarTecladoMatriz();
+void inicializarWebSocket();
+void webSocketEvent(WStype_t type, uint8_t * payload, size_t length);
 
 
 #endif

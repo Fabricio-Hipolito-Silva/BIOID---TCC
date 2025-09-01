@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Adafruit_Fingerprint.h>
 #include <HardwareSerial.h>
+#include <WebSocketsClient.h>
 #include <WiFi.h>
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
@@ -12,6 +13,8 @@
 HardwareSerial mySerial(2);  // Define mySerial na UART2 (RX = 13, TX = 12)
 Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
 LiquidCrystal_I2C lcd(0x27, 16, 2); // Endereço 0x27, LCD 16x2
+WebSocketsClient webSocket;
+
 
 
 void inicializarTelaLCD(){
@@ -82,5 +85,45 @@ void conectarWifi(){
   lcd.setCursor(4,1);
   lcd.print(WiFi.localIP());
 };
+
+void inicializarWebSocket(){
+    webSocket.begin(Server, 8080, "/");
+    webSocket.onEvent(webSocketEvent);
+};
+
+void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
+    switch(type) {
+        case WStype_DISCONNECTED:
+            lcd.clear();
+            lcd.setCursor(0,0);
+            lcd.print("WS Desconectado");
+            delay(1000);
+            lcd.clear();
+            Serial.println("WebSocket Disconnected");
+            break;
+        case WStype_CONNECTED:
+            lcd.clear();
+            lcd.setCursor(0,0);
+            lcd.print("WS conectado");
+            delay(1000);
+            lcd.clear();
+            Serial.println("WebSocket Connected");
+            webSocket.sendTXT("Hello Server");
+            break;
+        case WStype_TEXT:
+            delay(1000);
+            lcd.clear();
+            lcd.setCursor(0,0);
+            lcd.print("WS Mensagem:");
+            lcd.setCursor(0,1);
+            lcd.print((char *)payload);
+            delay(1000);
+            lcd.clear();
+            Serial.printf("WebSocket Message: %s\n", payload);
+            break;
+    }
+}
+
+
 
 

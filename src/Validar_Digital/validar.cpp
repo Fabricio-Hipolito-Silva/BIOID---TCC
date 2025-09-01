@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Adafruit_Fingerprint.h>
 #include <HardwareSerial.h>
+#include <WebSocketsClient.h>
 #include "fingerprint_init.h"
 #include "secret.h"
 #include "validar.h"
@@ -14,9 +15,11 @@ void validarSetup() {
     inicializarTecladoMatriz();
     inicializarSensor();
     conectarWifi();
+    inicializarWebSocket();
 }
 
 void validarLoop(){
+    webSocket.loop();
     
     int idDigital = ValidarID();
     String NomeDigital = ValidarNome(idDigital);
