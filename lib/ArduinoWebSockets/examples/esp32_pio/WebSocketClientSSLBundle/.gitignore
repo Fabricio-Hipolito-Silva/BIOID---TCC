@@ -3,7 +3,6 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
-.pioenvs/
-.pio/libdeps/
-.build/
-src/secret.cpp
+*secret*
+!*secrets.hpp.template
+*x509_crt_bundle.bin
