@@ -14,5 +14,6 @@ extern Adafruit_Fingerprint finger;
 extern WebSocketsClient webSocket;
 
 void inicializar_BIOID();
+void webSocketEvent(WStype_t type, uint8_t * payload, size_t length);
 
 #endif
