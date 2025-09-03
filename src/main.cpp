@@ -3,6 +3,7 @@
 #include "bioID_init.h"
 
 void setup(){
+Serial.begin(9600); 
 inicializar_BIOID();
 };
 void loop(){
