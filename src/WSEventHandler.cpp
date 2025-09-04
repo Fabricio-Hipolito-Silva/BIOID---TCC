@@ -12,6 +12,9 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
 
     case WStype_CONNECTED:
       Serial.println("WebSocket Connected");
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("Esperando cmd...");
       break;
 
     case WStype_TEXT: {
@@ -30,10 +33,11 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
         lcd.print(rm);
 
         if (strcmp(action, "cadastrar_digital") == 0) {
-          Serial.printf("Cadastrar digital para RM %d\n", rm);
-          lcd.setCursor(0, 1);
-          lcd.print("Cad. Digital");
-        };
+          // Serial.printf("Cadastrar digital para RM %d\n", rm);
+          // lcd.setCursor(0, 1);
+          // lcd.print("Cad. Digital");
+          cadastrarDigital(rm);
+        };  
         break;
       }
 

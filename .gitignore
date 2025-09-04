@@ -7,3 +7,4 @@
 .pio/libdeps/
 .build/
 src/secret.cpp
+Testes/
