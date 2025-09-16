@@ -25,7 +25,8 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
         StaticJsonDocument<200> doc; //Tem que Atualizar isso aqui depois
         deserializeJson(doc, msg);
 
-        const char* action = doc["action"];
+      if(doc.containsKey("action")){
+       const char* action = doc["action"];
         int rm = doc["rm"];
         lcd.clear();
         lcd.setCursor(0, 0);
@@ -38,6 +39,31 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
           // lcd.print("Cad. Digital");
           cadastrarDigital(rm);
         };  
+        }else if(doc.containsKey("status")){
+          const char* status = doc["status"];
+          if (strcmp(status, "sucesso") == 0) {
+            lcd.clear();
+            lcd.setCursor(0, 0);
+            lcd.print("Cadastrado");
+            lcd.setCursor(0, 1);
+            lcd.print("com Sucesso");
+            delay(1500);
+            lcd.clear();
+            lcd.setCursor(0, 0);
+            lcd.print("Esperando cmd...");
+          } else if (strcmp(status, "nao_reconhecido") == 0) {
+
+            // lcd.clear();
+            // lcd.setCursor(0, 0);
+            // lcd.print("Acesso Negado");
+            // delay(2000);
+            // lcd.clear();
+            // lcd.setCursor(0, 0);
+            // lcd.print("Esperando cmd...");
+          }
+        }
+
+ 
         break;
       }
 

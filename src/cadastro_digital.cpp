@@ -1,5 +1,6 @@
 #include "LiquidCrystal_I2C.h"
 #include <Adafruit_Fingerprint.h>
+#include <ArduinoJson.h>
 #include "bioID_init.h"
 #include "base64.h"
 
@@ -41,13 +42,32 @@ bool cadastrarDigital(int rm){
         return false;
     }
     String encoded = base64::encode(bytesReceived, 512);
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Digital");
+    lcd.setCursor(0, 1);
+    lcd.print("Cadastrada!");
+    delay(2000);
+
+
     Serial.println("Template em Base64:");
     Serial.println(encoded);
+
+    StaticJsonDocument<800> doc;
+    doc["acao"] = "digital_cadastrada";
+    doc["rm"] = rm;
+    doc["template"] = encoded;
+    String jsonString;
+    serializeJson(doc, jsonString);
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Enviando...");
+    delay(1000);
+    webSocket.sendTXT(jsonString);
     return true;
 
 
     
 
-//!!IREI TER QUE MODIFICAR A BIBLIOTECA
 
 };
