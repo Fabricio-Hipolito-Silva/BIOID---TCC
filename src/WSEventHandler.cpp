@@ -42,6 +42,7 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
         }else if(doc.containsKey("status")){
           const char* status = doc["status"];
           if (strcmp(status, "sucesso") == 0) {
+            Serial.println(status);
             lcd.clear();
             lcd.setCursor(0, 0);
             lcd.print("Cadastrado");
@@ -51,6 +52,7 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
             lcd.clear();
             lcd.setCursor(0, 0);
             lcd.print("Esperando cmd...");
+
           } else if (strcmp(status, "nao_reconhecido") == 0) {
 
             // lcd.clear();

@@ -23,7 +23,13 @@ void inicializar_LCD() {
 
 void inicializar_Fingerprint() {
   mySerial.begin(57600, SERIAL_8N1, 4, 5);           // Start serial communication at 57600 baud
-  finger.begin(57600);             // Initialize fingerprint sensor
+  finger.begin(57600);     
+  uint8_t p = finger.getParameters();
+if (p == FINGERPRINT_OK) {
+    Serial.println("Sensor respondeu! Endereço e parâmetros OK");
+} else {
+    Serial.print("Erro no sensor: "); Serial.println(p);
+}        // Initialize fingerprint sensor
   if (finger.verifyPassword()) {   // Verify password
     lcd.setCursor(0, 0);
     lcd.print("Sensor OK");
@@ -65,8 +71,3 @@ void inicializar_BIOID() {
   webSocket.onEvent(webSocketEvent);
   webSocket.setReconnectInterval(5000); // Attempt to reconnect every 5 seconds
 };
-
-
-
-
-
