@@ -4,6 +4,17 @@
 #include "bioID_init.h"
 #include "base64.h"
 
+int encontrarSlot() {
+  for (int id = 0; id < 127; id++) { // depende da capacidade do sensor
+    uint8_t p = finger.loadModel(id);
+    if (p != FINGERPRINT_OK) {
+      return id;  // achou slot vazio
+    }
+  }
+  return -1; // sensor cheio
+}
+
+
 bool cadastrarDigital(int rm){
     lcd.clear();
     lcd.setCursor(0, 0);
@@ -25,6 +36,19 @@ bool cadastrarDigital(int rm){
     while (finger.getImage() != FINGERPRINT_OK); // Wait for finger to be placed again
     if(finger.image2Tz(2) != FINGERPRINT_OK) return false;
     if(finger.createModel() != FINGERPRINT_OK) return false; // Create model
+
+    int slot = encontrarSlot();
+    if (slot == -1) {
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Sensor cheio!");
+        delay(2000);
+        return false; // Sensor cheio
+    }
+    if(finger.storeModel(slot) != FINGERPRINT_OK) return false; // Store model in found slot
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Lendo template");
     if(finger.getModel() != FINGERPRINT_OK) return false; // Check if model exists
     uint8_t bytesReceived[512]; // template real tem 512 bytes
     uint16_t index = 0;
@@ -57,6 +81,7 @@ bool cadastrarDigital(int rm){
     doc["acao"] = "digital_cadastrada";
     doc["rm"] = rm;
     doc["template"] = encoded;
+    doc["slot"] = slot;
     String jsonString;
     serializeJson(doc, jsonString);
     lcd.clear();
