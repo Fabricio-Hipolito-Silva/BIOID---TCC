@@ -16,5 +16,9 @@ extern WebSocketsClient webSocket;
 void inicializar_BIOID();
 void webSocketEvent(WStype_t type, uint8_t * payload, size_t length);
 bool cadastrarDigital(int rm);
+void validarDigital();
+void iniciarVerificacao();
+void pararVerificacao();
+void apagarTodasDigitais();
 
 #endif

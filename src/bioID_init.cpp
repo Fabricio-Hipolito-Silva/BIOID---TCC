@@ -14,6 +14,28 @@ HardwareSerial mySerial(2); // Use UART2
 Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
 WebSocketsClient webSocket;
 
+void apagarTodasDigitais() {
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Apagando tudo...");
+  delay(1000);
+
+  // Comando especial: apaga TODO o banco do sensor
+  int p = finger.emptyDatabase();
+
+  lcd.clear();
+  if (p == FINGERPRINT_OK) {
+    lcd.print("Banco limpo!");
+    Serial.println("Todas as digitais foram apagadas com sucesso.");
+  } else {
+    lcd.print("Erro!");
+    Serial.print("Falha ao apagar digitais. Codigo: ");
+    Serial.println(p);
+  }
+
+  delay(2000);
+};
+
 void inicializar_LCD() {
   Wire.begin(18,19);                  // Initialize I2C communication
   lcd.init();                      // Initialize the LCD
@@ -35,6 +57,25 @@ if (p == FINGERPRINT_OK) {
     lcd.print("Sensor OK");
     delay(1000);
     lcd.clear();
+    Serial.println("Testando slots salvos...");
+for (int i = 1; i < 10; i++) {
+  int res = finger.loadModel(i);
+  if (res == FINGERPRINT_OK) {
+    Serial.print("Slot ");
+    Serial.print(i);
+    Serial.println(" ocupado");
+  } else {
+    Serial.print("Slot ");
+    Serial.print(i);
+    Serial.println(" vazio");
+  }
+}
+
+    apagarTodasDigitais(); // Apaga todas as digitais ao iniciar
+    
+    
+
+
   } else {
     lcd.setCursor(0, 0);
     lcd.print("Sensor ERRO");

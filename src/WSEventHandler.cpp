@@ -27,19 +27,18 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
 
       if(doc.containsKey("action")){
        const char* action = doc["action"];
-        int rm = doc["rm"];
-        lcd.clear();
-        lcd.setCursor(0, 0);
-        lcd.print("RM: ");
-        lcd.print(rm);
-
         if (strcmp(action, "cadastrar_digital") == 0) {
-          // Serial.printf("Cadastrar digital para RM %d\n", rm);
-          // lcd.setCursor(0, 1);
-          // lcd.print("Cad. Digital");
+          int rm = doc["rm"];
+          lcd.clear();
+          lcd.setCursor(0, 0);
+          lcd.print("RM: ");
+          lcd.print(rm);
           cadastrarDigital(rm);
-        };  
-        }else if(doc.containsKey("status")){
+        }else if(strcmp(action, "validar_digital") == 0){
+        iniciarVerificacao();
+        validarDigital();
+      }
+      }else if(doc.containsKey("status")){
           const char* status = doc["status"];
           if (strcmp(status, "sucesso") == 0) {
             Serial.println(status);
