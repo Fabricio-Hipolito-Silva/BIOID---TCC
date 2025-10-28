@@ -9,4 +9,7 @@ inicializar_BIOID();
 };
 void loop(){
 webSocket.loop();
+  if (verificacaoAtiva) {
+    verificarDigitalStep();
+  }
 };

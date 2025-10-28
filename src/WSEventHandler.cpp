@@ -29,15 +29,19 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
        const char* action = doc["action"];
         if (strcmp(action, "cadastrar_digital") == 0) {
           int rm = doc["rm"];
+          int slot = doc["slot"];
           lcd.clear();
           lcd.setCursor(0, 0);
           lcd.print("RM: ");
           lcd.print(rm);
-          cadastrarDigital(rm);
+          cadastrarDigital(rm, slot);
         }else if(strcmp(action, "validar_digital") == 0){
         iniciarVerificacao();
-        validarDigital();
-      }
+        // validarDigital();
+        }else if(strcmp(action, "parar_verificacao") == 0){
+        pararVerificacao();
+        }
+
       }else if(doc.containsKey("status")){
           const char* status = doc["status"];
           if (strcmp(status, "sucesso") == 0) {
@@ -53,7 +57,7 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
             lcd.print("Esperando cmd...");
 
           } else if (strcmp(status, "nao_reconhecido") == 0) {
-
+            
             // lcd.clear();
             // lcd.setCursor(0, 0);
             // lcd.print("Acesso Negado");

@@ -71,7 +71,7 @@ for (int i = 1; i < 10; i++) {
   }
 }
 
-    apagarTodasDigitais(); // Apaga todas as digitais ao iniciar
+    // apagarTodasDigitais(); // Apaga todas as digitais ao iniciar
     
     
 

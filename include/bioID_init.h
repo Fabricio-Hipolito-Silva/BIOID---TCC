@@ -12,11 +12,13 @@ extern LiquidCrystal_I2C lcd;
 extern HardwareSerial mySerial;
 extern Adafruit_Fingerprint finger;
 extern WebSocketsClient webSocket;
+extern bool verificacaoAtiva;
 
 void inicializar_BIOID();
 void webSocketEvent(WStype_t type, uint8_t * payload, size_t length);
-bool cadastrarDigital(int rm);
-void validarDigital();
+bool cadastrarDigital(int rm, int slot);
+void verificarDigitalStep();
+// void validarDigital();
 void iniciarVerificacao();
 void pararVerificacao();
 void apagarTodasDigitais();
