@@ -40,6 +40,8 @@ void webSocketEvent(WStype_t type, uint8_t * payload, size_t length) {
         // validarDigital();
         }else if(strcmp(action, "parar_verificacao") == 0){
         pararVerificacao();
+        }else if(strcmp(action, "atualizar_digital") == 0){
+        atualizarDigital(doc["rm"], doc["slot"]);
         }
 
       }else if(doc.containsKey("status")){

@@ -52,7 +52,6 @@ bool cadastrarDigital(int rm, int slot){
     StaticJsonDocument<800> doc;
     doc["acao"] = "digital_cadastrada";
     doc["rm"] = rm;
-    doc["template"] = "blabla"; // pode manter base64 se quiser
     doc["slot"] = slot;
     String jsonString;
     serializeJson(doc, jsonString);

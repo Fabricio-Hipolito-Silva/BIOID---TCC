@@ -6,6 +6,7 @@
 #include <Adafruit_Fingerprint.h>
 #include <WebSocketsClient.h>
 #include <ArduinoJson.h>
+#include <Keypad.h>
 #include "bioID_init.h"
 #include "secret.h"
 
@@ -13,9 +14,12 @@ LiquidCrystal_I2C lcd(0x27, 16, 2); // Set the LCD I2C address
 HardwareSerial mySerial(2); // Use UART2
 Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
 WebSocketsClient webSocket;
+Keypad* teclado;
+String rmDigitado;
+bool modoDigitacaoRM;
 
 void apagarTodasDigitais() {
-  lcd.clear();
+  lcd.clear();  
   lcd.setCursor(0, 0);
   lcd.print("Apagando tudo...");
   delay(1000);
@@ -52,7 +56,7 @@ if (p == FINGERPRINT_OK) {
 } else {
     Serial.print("Erro no sensor: "); Serial.println(p);
 }        // Initialize fingerprint sensor
-  if (finger.verifyPassword()) {   // Verify password
+  if (finger.verifyPassword()) {   // Verify password     
     lcd.setCursor(0, 0);
     lcd.print("Sensor OK");
     delay(1000);
@@ -102,11 +106,28 @@ void conectar_WIFI(){
     lcd.clear();
 };
 
+void inicializarTecladoMatriz(){
+  const byte LINHAS = 4;
+  const byte COLUNAS = 3;
+  char teclas[LINHAS][COLUNAS] = {
+    {'1', '2', '3'},
+    {'4', '5', '6'},
+    {'7', '8', '9'},
+    {'*', '0', '#'}
+  };
+  byte pinosLinhas[LINHAS] = {13, 12, 14, 27};
+  byte pinosColunas[COLUNAS] = {26, 25, 33};
+  teclado = new Keypad(makeKeymap(teclas), pinosLinhas, pinosColunas, LINHAS, COLUNAS);
+  rmDigitado = "";
+  modoDigitacaoRM = false;
+};
+
 
 void inicializar_BIOID() {
   inicializar_LCD();
   inicializar_Fingerprint();
   conectar_WIFI();
+  inicializarTecladoMatriz();
 
   webSocket.begin(server, 8080, "/");
   webSocket.onEvent(webSocketEvent);
