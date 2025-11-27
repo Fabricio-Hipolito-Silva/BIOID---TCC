@@ -109,14 +109,14 @@ void conectar_WIFI(){
 void inicializarTecladoMatriz(){
   const byte LINHAS = 4;
   const byte COLUNAS = 3;
-  char teclas[LINHAS][COLUNAS] = {
+  static char teclas[LINHAS][COLUNAS] = {
     {'1', '2', '3'},
     {'4', '5', '6'},
     {'7', '8', '9'},
     {'*', '0', '#'}
   };
-  byte pinosLinhas[LINHAS] = {13, 12, 14, 27};
-  byte pinosColunas[COLUNAS] = {26, 25, 33};
+  static byte pinosLinhas[LINHAS] = {13, 12, 14, 27};
+  static byte pinosColunas[COLUNAS] = {26, 25, 33};
   teclado = new Keypad(makeKeymap(teclas), pinosLinhas, pinosColunas, LINHAS, COLUNAS);
   rmDigitado = "";
   modoDigitacaoRM = false;

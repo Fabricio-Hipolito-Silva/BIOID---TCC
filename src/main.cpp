@@ -9,6 +9,7 @@ inicializar_BIOID();
 };
 void loop(){
 webSocket.loop();
+verificarTeclado();
   if (verificacaoAtiva) {
     verificarDigitalStep();
   }

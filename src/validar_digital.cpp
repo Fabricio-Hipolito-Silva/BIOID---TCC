@@ -30,40 +30,77 @@ void pararVerificacao() {
   lcd.print("Esperando cmd...");
 }
 
-void verificarTeclado(){
- char tecla = teclado->getKey();
- if(!tecla){
-    return;
- };
- if(tecla == '*'){
-    modoDigitacaoRM = true;
+
+void verificarTeclado() {
+  char tecla = teclado->getKey();
+  if (!tecla) return;
+
+  // ---------------------------
+  // MODO NORMAL (não digitando RM)
+  // ---------------------------
+  if (!modoDigitacaoRM) {
+    if (tecla == '*') {
+      modoDigitacaoRM = true;
+      rmDigitado = "";
+      lcd.clear();
+      lcd.setCursor(0, 0);
+      lcd.print("Digite o RM:");
+    }
+    return;  // IGNORA QUALQUER OUTRA TECLA
+  }
+
+  // ---------------------------
+  // MODO DIGITAÇÃO DE RM
+  // ---------------------------
+
+  // RESET do RM ao apertar *
+  if (tecla == '*') {
     rmDigitado = "";
     lcd.clear();
-    lcd.setCursor(0,0);
+    lcd.setCursor(0, 0);
     lcd.print("Digite o RM:");
+    lcd.setCursor(0, 1);
+    lcd.print("");  // limpa linha
     return;
- };
- if(modoDigitacaoRM == true){
-    if (tecla >= '0' && tecla <= '9') {
-      rmDigitado += tecla;
-      lcd.setCursor(0, 1);
-      lcd.print(rmDigitado);
- }else if(tecla == '#'){
-      StaticJsonDocument<200> doc;
-      doc["action"] = "rm_digitado";
-      doc["rm"] = rmDigitado.toInt();
-      String json;
-      serializeJson(doc, json);
-      webSocket.sendTXT(json);
-      lcd.clear();
-      lcd.setCursor(0,0);
-      lcd.print("RM Enviado");
-      delay(1000);
-    };
- };
+  }
 
+  // Digitação de números
+  if (tecla >= '0' && tecla <= '9') {
+    rmDigitado += tecla;
+    lcd.setCursor(0, 1);
+    lcd.print(rmDigitado);
+    return;
+  }
 
+  // Finalizar com #
+  if (tecla == '#') {
+    StaticJsonDocument<200> doc;
+    doc["acao"] = "rm_digitado";
+    doc["rm"] = rmDigitado.toInt();
+
+    String json;
+    serializeJson(doc, json);
+    webSocket.sendTXT(json);
+
+    // Sai do modo de digitação
+    modoDigitacaoRM = false;
+
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("RM Enviado");
+    delay(1000);
+
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Aguardando dedo");
+    lcd.setCursor(0, 1);
+    lcd.print("...");
+    return;
+  }
+
+  // Outros botões (A B C D etc.) → ignora
 }
+
 // Função que executa 1 "passo" da verificação por vez
 void verificarDigitalStep() {
   static unsigned long ultimoTempo = 0;
